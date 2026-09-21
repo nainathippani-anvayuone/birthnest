@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Poppins", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", ui-serif, Georgia, serif;
+
+  /* Brand — dusty rose / mauve pink, matched to the Birth Nest mark */
+  --color-brand-50: #fdf3f5;
+  --color-brand-100: #fbe4e9;
+  --color-brand-200: #f6cad3;
+  --color-brand-300: #eea3b2;
+  --color-brand-400: #de7d92;
+  --color-brand-500: #c76277;
+  --color-brand-600: #a8586a;
+  --color-brand-700: #8a4456;
+  --color-brand-800: #6f3644;
+  --color-brand-900: #4a2530;
+
+  --color-blush-50: #fff7f8;
+  --color-blush-100: #fdedf0;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-blush-50 text-brand-900 antialiased;
+  }
+
+  ::selection {
+    @apply bg-brand-200 text-brand-900;
+  }
+}
+
+@layer utilities {
+  .container-app {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-y {
+    @apply py-16 sm:py-20;
+  }
+}
