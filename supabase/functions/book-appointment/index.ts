@@ -77,15 +77,15 @@ async function sendConfirmationEmail(params: {
         subject: "Your appointment at Birth Nest is confirmed",
         html: `
           <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
-            <h2 style="color: #8a4456;">Appointment Confirmed</h2>
+            <h2 style="color: #723f28;">Appointment Confirmed</h2>
             <p>Hi ${params.patientName},</p>
             <p>Your appointment with <strong>Dr. ${params.doctorName}</strong> at Birth Nest is confirmed:</p>
-            <div style="background: #fdf3f5; border-radius: 12px; padding: 16px; margin: 16px 0;">
+            <div style="background: #faf4e9; border-radius: 12px; padding: 16px; margin: 16px 0;">
               <p style="margin: 0;"><strong>${prettyDate}</strong></p>
               <p style="margin: 4px 0 0;">${prettyTime}</p>
             </div>
-            <p>If you need to reschedule or cancel, please call us at +91 12345 67890.</p>
-            <p style="color: #a8586a; font-weight: bold;">Birth Nest — Dr. Mythri Sharan</p>
+            <p>If you need to reschedule or cancel, please call us at +91 97341 11222 or +91 80901 00569.</p>
+            <p style="color: #8b5232; font-weight: bold;">Birth Nest — Dr. Mythri Sharan</p>
           </div>
         `,
       }),

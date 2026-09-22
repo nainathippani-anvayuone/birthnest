@@ -87,7 +87,7 @@ export function BookAppointmentSection() {
 
     setSubmitting(false);
     if (fnError) {
-      setError('Something went wrong booking that slot. Please call us at +91 98808 55845 instead.');
+      setError('Something went wrong booking that slot. Please call us at +91 97341 11222 or +91 80901 00569 instead.');
       return;
     }
     const payload = data as { success?: boolean; error?: string; emailSent?: boolean } | null;

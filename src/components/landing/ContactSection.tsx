@@ -51,7 +51,8 @@ export function ContactSection() {
               {CLINIC_ADDRESS}
             </InfoRow>
             <InfoRow icon={Phone} title="Phone">
-              <a href="tel:+919880855845" className="hover:text-brand-800">+91 98808 55845</a>
+              <a href="tel:+919734111222" className="block hover:text-brand-800">+91 97341 11222</a>
+              <a href="tel:+918090100569" className="block hover:text-brand-800">+91 80901 00569</a>
             </InfoRow>
             <InfoRow icon={Mail} title="Email">
               care@birthnest.clinic
@@ -137,7 +138,7 @@ function InfoRow({ icon: Icon, title, children }: { icon: typeof MapPin; title: 
       </div>
       <div>
         <p className="text-sm font-semibold text-brand-900">{title}</p>
-        <p className="text-sm text-brand-600">{children}</p>
+        <div className="text-sm text-brand-600">{children}</div>
       </div>
     </div>
   );

@@ -58,10 +58,12 @@ export function PublicNavbar() {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
-          <a href="tel:+919880855845" className="flex items-center gap-1.5 text-sm font-medium text-brand-700">
-            <Phone className="h-4 w-4" />
-            +91 98808 55845
-          </a>
+          <div className="hidden items-center gap-1.5 whitespace-nowrap text-sm font-medium text-brand-700 xl:flex">
+            <Phone className="h-4 w-4 shrink-0" />
+            <a href="tel:+919734111222" className="hover:text-brand-900">+91 97341 11222</a>
+            <span className="text-brand-300">/</span>
+            <a href="tel:+918090100569" className="hover:text-brand-900">80901 00569</a>
+          </div>
           {user ? (
             <Button size="sm" onClick={() => navigate('/dashboard')}>
               Go to Dashboard
@@ -96,6 +98,12 @@ export function PublicNavbar() {
                 {link.label}
               </a>
             ))}
+            <div className="mt-2 flex items-center gap-1.5 px-2 text-sm font-medium text-brand-700">
+              <Phone className="h-4 w-4 shrink-0" />
+              <a href="tel:+919734111222" className="hover:text-brand-900">+91 97341 11222</a>
+              <span className="text-brand-300">/</span>
+              <a href="tel:+918090100569" className="hover:text-brand-900">80901 00569</a>
+            </div>
             <div className="mt-2 flex flex-col gap-2">
               {user ? (
                 <Button onClick={() => navigate('/dashboard')}>Go to Dashboard</Button>

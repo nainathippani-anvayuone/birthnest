@@ -4,20 +4,20 @@
   --font-sans: "Poppins", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Playfair Display", ui-serif, Georgia, serif;
 
-  /* Brand — dusty rose / mauve pink, matched to the Birth Nest mark */
-  --color-brand-50: #fdf3f5;
-  --color-brand-100: #fbe4e9;
-  --color-brand-200: #f6cad3;
-  --color-brand-300: #eea3b2;
-  --color-brand-400: #de7d92;
-  --color-brand-500: #c76277;
-  --color-brand-600: #a8586a;
-  --color-brand-700: #8a4456;
-  --color-brand-800: #6f3644;
-  --color-brand-900: #4a2530;
+  /* Brand — sand / camel / chestnut / cognac / coffee, warm earth tones */
+  --color-brand-50: #f8f1e7;
+  --color-brand-100: #efe0c9;
+  --color-brand-200: #e0c39d;
+  --color-brand-300: #cba274;
+  --color-brand-400: #b98a57;
+  --color-brand-500: #a16b3f;
+  --color-brand-600: #8b5232;
+  --color-brand-700: #723f28;
+  --color-brand-800: #5a311f;
+  --color-brand-900: #3b2116;
 
-  --color-blush-50: #fff7f8;
-  --color-blush-100: #fdedf0;
+  --color-blush-50: #faf4e9;
+  --color-blush-100: #f1e4cc;
 }
 
 @layer base {

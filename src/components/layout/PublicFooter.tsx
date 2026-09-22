@@ -38,7 +38,10 @@ export function PublicFooter() {
             </li>
             <li className="flex items-center gap-2">
               <Phone className="h-4 w-4 shrink-0" />
-              +91 98808 55845
+              <a href="tel:+919734111222" className="hover:text-white">+91 97341 11222</a>
+            </li>
+            <li className="flex items-center gap-2 pl-6">
+              <a href="tel:+918090100569" className="hover:text-white">+91 80901 00569</a>
             </li>
             <li className="flex items-center gap-2">
               <Mail className="h-4 w-4 shrink-0" />
