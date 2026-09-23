@@ -1,70 +1,47 @@
-# Birth Nest — Gynaecology Hospital Management System
+# Birth Nest — Public Site
 
-A production-style **staff-only** hospital management portal for **Birth Nest**, Dr.
-Mythri Sharan's gynaecology, pregnancy and fertility care clinic — a public marketing
-site plus a role-based, authenticated management dashboard, backed by a real Supabase
-project.
+The public marketing site and live appointment-booking flow for **Birth
+Nest**, Dr. Mythri Sharan's gynaecology, pregnancy and fertility care
+clinic, backed by a real Supabase project.
 
-This is a tool for the clinic's own team, not a patient portal: patients never create
-an account or log in anywhere. They're plain records (name, contact info, medical
-history) that staff create and manage — the same way a receptionist would enter them
-into any hospital system.
+This repo is **public-facing only** — there is no login page and no staff
+dashboard here. Those live in a separate companion repo,
+[`birthnest-admin`](https://github.com/nainathippani-anvayuone/birthnest-admin)
+(admin app URL: TODO — fill in once deployed), so a patient browsing the
+website never sees a staff sign-in surface at all. Both apps talk to the
+**same Supabase project**, so an appointment booked here shows up in the
+admin app immediately — there's no syncing code, they just share a
+database.
 
 - **Frontend:** Vite + React 19 + TypeScript, Tailwind CSS v4
 - **Backend:** Supabase (Postgres, Auth, Row Level Security, Storage, Realtime, Edge Functions)
 
-## Roles
-
-| Role | Access |
-|---|---|
-| `admin` | Everything: staff/user management, services, analytics, billing, pharmacy |
-| `doctor` | Own patients, consultations, prescriptions, schedule, appointments |
-| `receptionist` | Patient registration, appointments, billing, pharmacy |
-| `lab_staff` | Lab order queue, entering results, test catalog |
-
-Patients are **not** a login role — see below.
-
-## Two modes, same code
-
-`src/lib/supabase.ts` checks whether `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY`
-are set:
-
-- **Configured** → talks to the real Supabase project below. This is the
-  current state of this repo — a project (`birth-nest`) already exists and
-  `.env` already points at it.
-- **Not configured** (no `.env`) → falls back to **demo mode**: an in-memory
-  mock of the same client API (`src/lib/mockSupabaseClient.ts`), seeded with
-  sample data (`src/lib/demoData.ts`), so the whole app is explorable with
-  zero setup via the "Try a demo account" panel on the login page. Nothing in
-  the UI code branches on this — every page just calls `supabase.from(...)`
-  the same way either way.
+Patients are **not** a login role anywhere in this system — they're plain
+records (name, contact info, medical history) that staff create and manage
+from the admin app, the same way a receptionist would enter them into any
+hospital system.
 
 ## Project structure
 
 ```
 src/
   components/
-    ui/           Reusable primitives: Button, Card, DataTable, Modal, Field, etc.
-    layout/        DashboardLayout, PublicNavbar/Footer, ProtectedRoute, RoleGate
-    landing/       Public homepage sections
-    PatientPicker.tsx  Search-and-select for patient *records* (not accounts)
-  contexts/        AuthContext (session + profile) — staff only
-  hooks/           useUnreadNotifications, usePublicServices/Testimonials
+    ui/           Reusable primitives: Button, Field, Spinner
+    layout/        PublicNavbar, PublicFooter
+    landing/       Public homepage sections (Hero, Services, booking widget, etc.)
+  hooks/           usePublicServices/usePublicTestimonials
   pages/
-    public/        Landing, Login, 404 (no signup — see below)
-    dashboard/      DashboardHome + admin/doctor/shared feature pages
+    public/        LandingPage, NotFoundPage
   lib/
-    supabase.ts             Real vs. demo client switch
-    mockSupabaseClient.ts   Demo-mode query engine + RLS emulation
-    demoData.ts             Demo seed data
+    supabase.ts    Supabase client (always talks to the real project — no demo mode here)
   types/           Hand-maintained types mirroring the migrations below
-  utils/           Formatters, role/nav config, scheduling (slot computation),
-                   accountProvisioning (see below)
+  utils/           Formatters, cn
 supabase/
-  migrations/      Versioned schema history (see below) — the source of truth
+  migrations/      Versioned schema history (see below) — the source of truth,
+                    shared by both this repo and birthnest-admin
   functions/
-    provision-account/   Edge Function: creates staff accounts (admin/doctor/
-                          receptionist/lab_staff) — never patients
+    book-appointment/    Public Edge Function powering the booking widget
+    provision-account/   Staff-account creation, called from the admin app
   seed.sql         Catalog-only demo data: services, lab tests, testimonials
   config.toml      Project config (auth settings, etc.) — pushed via
                    `supabase config push`
@@ -92,6 +69,8 @@ Schema lives in `supabase/migrations/`, applied in order:
 4. `20260921142329_public_booking.sql` — adds `appointments.is_first_visit`
    and the `get_doctor_available_slots(doctor_id, date)` function (see
    "Public appointment booking" below).
+5. `20260921165535_add_real_testimonials.sql` / `20260921165849_replace_placeholder_testimonials.sql`
+   — replace placeholder testimonial copy with real, sourced patient reviews.
 
 Two `WARN`-level advisor findings are left as-is, intentionally:
 `current_role()`/`is_staff()`/`is_admin()` are flagged as "publicly executable
@@ -106,17 +85,18 @@ To apply schema changes to the linked project:
 supabase db push --linked
 ```
 
-(or add a new migration first with `supabase migration new <name>`).
+(or add a new migration first with `supabase migration new <name>`). Since
+`birthnest-admin` reads from this same database, a schema change here is
+immediately visible there too — no separate migration step needed on that
+side.
 
-### Bootstrapping the first admin
+### Bootstrapping the first admin account
 
-Every account — there's only ever the one kind, staff — lands as
-`role = 'receptionist'` by default (the lowest-privilege role; enforced by the
-`handle_new_user` trigger, and a browser client can never mint itself a
-higher role directly). To create the **first** admin, create an account
-through **Dashboard → Staff & Users** (which needs an admin to already
-exist — chicken-and-egg for the very first one) or via the Supabase
-dashboard/Admin API, then in the SQL Editor run:
+There's no UI in *this* repo for creating staff accounts (that's the admin
+app's job) or for promoting the very first one to `admin` — every account
+starts as `role = 'receptionist'` by default (lowest privilege, enforced by
+the `handle_new_user` trigger). To create the first admin, create an account
+via the Supabase dashboard/Admin API, then in the SQL Editor run:
 
 ```sql
 update public.profiles set role = 'admin' where email = 'you@example.com';
@@ -124,25 +104,20 @@ update public.profiles set role = 'admin' where email = 'you@example.com';
 
 This works specifically because that guard trigger only blocks role changes
 made *by a logged-in browser session* — `auth.uid()` is null when run from
-the SQL Editor or any service-role context, so this one-time bootstrap step
-always works. After that, the admin creates every other account from
-**Dashboard → Staff & Users** — no more SQL needed.
+the SQL Editor or any service-role context. After that, the admin creates
+every other account from the admin app's **Staff & Users** page.
 
-## Account creation
+## Staff account creation (backend)
 
-**Staff** (admin/doctor/receptionist/lab_staff) go through
-`src/utils/accountProvisioning.ts`, the entry point the "Staff & Users" page
-calls. In real mode it invokes the **`provision-account` Edge Function**
-(`supabase/functions/provision-account`), which:
+The `provision-account` Edge Function (`supabase/functions/provision-account`)
+lives here since it's backend, but is only ever called from the
+`birthnest-admin` app's Staff & Users page:
 
 1. Authenticates the caller from their JWT and checks they're an admin.
 2. Uses the service-role key — never sent to the browser — to call
    `auth.admin.createUser({ email, password: <generated>, email_confirm: true })`.
-   This is impossible from the browser (the anon key can't call the
-   `admin.*` namespace at all) and can't be forged by a client. No email is
-   sent — the generated temp password is returned once and shown on screen
-   for the admin to hand over. The new user should change it after their
-   first login (Profile → Security).
+   No email is sent — the generated temp password is returned once and shown
+   on screen for the admin to hand over.
 3. Updates `profiles.role` and inserts the `doctors` row (if applicable), all
    with the service role so it bypasses RLS atomically.
 
@@ -152,22 +127,9 @@ To redeploy the function after an edit:
 supabase functions deploy provision-account --project-ref zwuqsymaswlnicuvxiai
 ```
 
-**Patients** are not accounts at all — "Register Patient" on the Patients
-page does a single, direct `insert` into the `patients` table (name, phone,
-medical history, etc.). No auth involved, no Edge Function, nothing to
-provision. This is intentional: it's the whole reason the login/account
-concept was removed from patients — see migration 3.
-
-### If you ever need email verification
-
-There's no patient signup to secure, but if staff account creation should
-someday confirm the person owns their email (a real compliance requirement
-in some deployments) instead of a temp password handed over in person: swap
-the `auth.admin.createUser(...)` call in the Edge Function for
-`auth.admin.inviteUserByEmail(...)` and drop the `tempPassword` return value.
-Supabase's shared default email service caps out at **2 emails/hour** per
-project — configure custom SMTP under Project Settings → Auth before relying
-on this for real volume.
+**Patients** are not accounts at all — the admin app's "Register Patient"
+does a single, direct `insert` into the `patients` table. No auth involved,
+no Edge Function.
 
 ## Public appointment booking
 
@@ -191,8 +153,9 @@ account, no phone call. The flow, end to end:
    - **Finds-or-creates the patient by email** — a repeat visitor doesn't
      accumulate duplicate records.
    - Inserts the `appointments` row (`status: 'scheduled'`, the reason and
-     first-visit flag included) — it appears on staff's Appointments page and
-     `DashboardHome` immediately, same as any other appointment.
+     first-visit flag included) — it appears on the **admin app's**
+     Appointments page and dashboard overview immediately, same as any other
+     appointment, because both apps read the same database.
    - Sends a confirmation email (best-effort — see below). A failed send
      never fails the booking; the confirmation screen just says so honestly.
 
@@ -229,9 +192,11 @@ npm install
 npm run dev
 ```
 
-Visit `http://localhost:5173`. `.env` already points at the live `birth-nest`
-Supabase project — delete it (or blank the values) to fall back to demo mode
-instead.
+Needs a `.env` (see `.env.example`) with `VITE_SUPABASE_URL` /
+`VITE_SUPABASE_ANON_KEY` pointing at the Supabase project — unlike
+`birthnest-admin`, this app has no demo-mode fallback, since its whole
+purpose (booking, live services/testimonials) only makes sense against a
+real backend.
 
 ## Instagram section
 
@@ -251,9 +216,6 @@ without the Instagram Graph API (which needs a Meta developer app + token).
   not appointment booking) submits into `contact_messages` (anyone can
   insert, no login) — for actual booking, see "Public appointment booking"
   above.
-- Patient detail views use modals rather than dedicated routes, to keep
-  the page count manageable — the underlying Supabase queries are unchanged
-  either way.
 - The `documents` table + `medical-documents` storage bucket exist in the
   schema (10 MB limit, PDF/PNG/JPEG/WebP only, staff-only access) but there's
-  no upload/view page wired up yet — a natural next feature.
+  no upload/view page wired up yet — a natural next feature for the admin app.

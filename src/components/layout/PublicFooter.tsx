@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { Phone, Mail, MapPin, Clock, Share2 } from 'lucide-react';
 import { Logo } from '@/components/Logo';
 
@@ -24,7 +23,6 @@ export function PublicFooter() {
             <li><a href="#about" className="hover:text-white">About Us</a></li>
             <li><a href="#services" className="hover:text-white">Services</a></li>
             <li><a href="#testimonials" className="hover:text-white">Testimonials</a></li>
-            <li><Link to="/login" className="hover:text-white">Staff Login</Link></li>
           </ul>
         </div>
 

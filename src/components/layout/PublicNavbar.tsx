@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, Phone } from 'lucide-react';
 import { Logo } from '@/components/Logo';
 import { Button } from '@/components/ui/Button';
-import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/utils/cn';
 
 const LINKS = [
@@ -18,7 +17,6 @@ const LINKS = [
 export function PublicNavbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -64,20 +62,9 @@ export function PublicNavbar() {
             <span className="text-brand-300">/</span>
             <a href="tel:+918090100569" className="hover:text-brand-900">80901 00569</a>
           </div>
-          {user ? (
-            <Button size="sm" onClick={() => navigate('/dashboard')}>
-              Go to Dashboard
-            </Button>
-          ) : (
-            <>
-              <Button variant="outline" size="sm" onClick={() => navigate('/login')}>
-                Sign in
-              </Button>
-              <Button size="sm" onClick={goToBookAppointment}>
-                Book Appointment
-              </Button>
-            </>
-          )}
+          <Button size="sm" onClick={goToBookAppointment}>
+            Book Appointment
+          </Button>
         </div>
 
         <button className="rounded-lg p-2 text-brand-700 md:hidden" onClick={() => setOpen((v) => !v)} aria-label="Toggle menu">
@@ -105,16 +92,7 @@ export function PublicNavbar() {
               <a href="tel:+918090100569" className="hover:text-brand-900">80901 00569</a>
             </div>
             <div className="mt-2 flex flex-col gap-2">
-              {user ? (
-                <Button onClick={() => navigate('/dashboard')}>Go to Dashboard</Button>
-              ) : (
-                <>
-                  <Button variant="outline" onClick={() => navigate('/login')}>
-                    Sign in
-                  </Button>
-                  <Button onClick={goToBookAppointment}>Book Appointment</Button>
-                </>
-              )}
+              <Button onClick={goToBookAppointment}>Book Appointment</Button>
             </div>
           </div>
         </div>
