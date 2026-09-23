@@ -55,9 +55,6 @@ export function PublicFooter() {
           <ul className="mt-4 space-y-2 text-sm text-brand-200/80">
             <li className="flex items-center gap-2"><Clock className="h-4 w-4 shrink-0" /> Mon – Sat: 9:00 AM – 8:00 PM</li>
             <li className="flex items-center gap-2 pl-6">Sunday: 10:00 AM – 2:00 PM</li>
-            <li className="mt-2 rounded-lg bg-rose-500/20 px-3 py-2 text-rose-100">
-              Emergency Line: +91 98765 43210 (24/7)
-            </li>
           </ul>
         </div>
       </div>
