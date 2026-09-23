@@ -13,7 +13,12 @@ export function Logo({ className, markClassName, showTagline = true, variant = '
 
   return (
     <div className={cn('flex items-center gap-2.5', className)}>
-      <img src="/logo-mark.svg" alt="" aria-hidden="true" className={cn('h-9 w-auto', markClassName)} />
+      <img
+        src={variant === 'light' ? '/logo-mark-light.png' : '/logo-mark.png'}
+        alt=""
+        aria-hidden="true"
+        className={cn('h-9 w-auto', markClassName)}
+      />
       <div className="leading-tight">
         <p className={cn('font-serif text-lg font-bold tracking-wide', textColor)}>BIRTH NEST</p>
         {showTagline && (

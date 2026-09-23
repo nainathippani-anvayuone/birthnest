@@ -1,7 +1,6 @@
 import { Sparkles } from 'lucide-react';
 import { usePublicServices } from '@/hooks/usePublicContent';
 import { Spinner } from '@/components/ui/Spinner';
-import { formatCurrency } from '@/utils/formatters';
 
 const CATEGORY_LABELS: Record<string, string> = {
   consultation: 'Consultations',
@@ -42,12 +41,7 @@ export function Services() {
                   </span>
                   <h3 className="mt-3 font-serif text-lg font-semibold text-brand-900">{s.name}</h3>
                   {s.description && <p className="mt-1.5 text-sm text-brand-600">{s.description}</p>}
-                  <div className="mt-4 flex items-center justify-between text-sm">
-                    <span className="font-semibold text-brand-800">
-                      {s.price > 0 ? formatCurrency(s.price) : 'Varies'}
-                    </span>
-                    <span className="text-brand-400">{s.duration_minutes} min</span>
-                  </div>
+                  <div className="mt-4 text-sm text-brand-400">{s.duration_minutes} min</div>
                 </div>
               ))}
             </div>

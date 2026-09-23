@@ -177,7 +177,7 @@ export function LoginPage() {
           className="absolute left-1/2 top-1/2 h-[30rem] w-[30rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-200/70 xl:h-[34rem] xl:w-[34rem]"
         />
         <img
-          src="/logo-mark.svg"
+          src="/logo-mark.png"
           alt=""
           aria-hidden="true"
           className="absolute left-1/2 top-1/2 z-10 h-36 w-auto -translate-x-1/2 -translate-y-1/2 opacity-90 xl:h-44"

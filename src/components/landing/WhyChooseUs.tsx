@@ -1,11 +1,11 @@
-import { Clock3, ShieldCheck, Stethoscope, Wallet, HeartHandshake, FlaskConical } from 'lucide-react';
+import { Clock3, ShieldCheck, Stethoscope, Heart, HeartHandshake, FlaskConical } from 'lucide-react';
 
 const REASONS = [
   { icon: Stethoscope, title: 'Expert, Experienced Care', desc: 'Led by Dr. Mythri Sharan with 14+ years of dedicated obstetric & gynaecological practice.' },
   { icon: Clock3, title: 'Timely Appointments', desc: 'Structured scheduling means minimal waiting and same-week availability.' },
   { icon: FlaskConical, title: 'In-House Diagnostics', desc: 'On-site ultrasound and lab testing for faster results and fewer visits elsewhere.' },
   { icon: ShieldCheck, title: 'Privacy & Safety', desc: 'Confidential records, secure digital systems, and a comfortable clinical environment.' },
-  { icon: Wallet, title: 'Transparent Pricing', desc: 'Clear consultation fees and itemised billing — no surprises.' },
+  { icon: Heart, title: 'Continuity of Care', desc: 'See the same doctor from your first consultation through delivery and beyond.' },
   { icon: HeartHandshake, title: 'Personalised Attention', desc: 'Every treatment plan is tailored to your health, history and comfort.' },
 ];
 
