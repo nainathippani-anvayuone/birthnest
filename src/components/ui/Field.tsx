@@ -21,22 +21,22 @@ function FieldWrapper({ htmlFor, label, error, hint, required, children }: Wrapp
   return (
     <div className="flex flex-col gap-1.5">
       {label && (
-        <label htmlFor={htmlFor} className="text-sm font-medium text-brand-900">
+        <label htmlFor={htmlFor} className="text-sm font-semibold text-ink">
           {label}
           {required && <span className="text-rose-600"> *</span>}
         </label>
       )}
       {children}
-      {hint && !error && <p className="text-xs text-brand-500">{hint}</p>}
+      {hint && !error && <p className="text-xs text-clay">{hint}</p>}
       {error && <p className="text-xs font-medium text-rose-600">{error}</p>}
     </div>
   );
 }
 
 const baseInputClasses =
-  'w-full rounded-lg border border-brand-200 bg-white px-3 py-2 text-sm text-brand-900 ' +
-  'placeholder:text-brand-300 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 ' +
-  'disabled:cursor-not-allowed disabled:bg-brand-50';
+  'w-full rounded-xl border border-line bg-paper px-3.5 py-2.5 text-[0.95rem] text-ink ' +
+  'placeholder:text-peach focus:border-clay focus:outline-none focus:ring-2 focus:ring-sand ' +
+  'disabled:cursor-not-allowed disabled:bg-sand';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;

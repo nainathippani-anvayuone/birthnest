@@ -1,23 +1,44 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Poppins", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Playfair Display", ui-serif, Georgia, serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-serif: Georgia, "Times New Roman", serif;
 
-  /* Brand — sand / camel / chestnut / cognac / coffee, warm earth tones */
-  --color-brand-50: #f8f1e7;
-  --color-brand-100: #efe0c9;
-  --color-brand-200: #e0c39d;
-  --color-brand-300: #cba274;
-  --color-brand-400: #b98a57;
-  --color-brand-500: #a16b3f;
-  --color-brand-600: #8b5232;
-  --color-brand-700: #723f28;
-  --color-brand-800: #5a311f;
-  --color-brand-900: #3b2116;
+  /* Layout breakpoints taken from the reference design: phone ≤480px,
+     tablet ≤820px, desktop above. */
+  --breakpoint-xs: 30.0625rem;
+  --breakpoint-desk: 51.3125rem;
 
-  --color-blush-50: #faf4e9;
-  --color-blush-100: #f1e4cc;
+  /* Reference palette — beige, taupe and cocoa */
+  --color-ink: #44362f;
+  --color-cocoa: #67544a;
+  --color-clay: #8b7162;
+  --color-peach: #c9b29d;
+  --color-cream: #f5efe5;
+  --color-sand: #e9ded0;
+  --color-paper: #fffdf9;
+  --color-line: #d8c9b8;
+  --color-muted: #775d50;
+  --color-oat: #e8ddcf;
+
+  /* Legacy scale, remapped onto the reference palette so any remaining
+     brand-* utilities stay on-palette. */
+  --color-brand-50: #f8f3ec;
+  --color-brand-100: #e9ded0;
+  --color-brand-200: #d8c9b8;
+  --color-brand-300: #c9b29d;
+  --color-brand-400: #ad8b76;
+  --color-brand-500: #8b7162;
+  --color-brand-600: #67544a;
+  --color-brand-700: #5f4c43;
+  --color-brand-800: #4f3f37;
+  --color-brand-900: #44362f;
+
+  --color-blush-50: #f5efe5;
+  --color-blush-100: #e8ddcf;
+
+  --shadow-soft: 0 18px 45px rgba(68, 54, 47, 0.1);
+  --shadow-card: 0 10px 30px rgba(90, 55, 37, 0.05);
 }
 
 @layer base {
@@ -26,20 +47,99 @@
   }
 
   body {
-    @apply bg-blush-50 text-brand-900 antialiased;
+    @apply bg-cream font-sans text-ink antialiased;
+    line-height: 1.6;
   }
 
   ::selection {
-    @apply bg-brand-200 text-brand-900;
+    @apply bg-sand text-ink;
+  }
+
+  /* Keep anchored sections clear of the sticky header. */
+  section[id] {
+    scroll-margin-top: 70px;
+  }
+
+  @media (min-width: 51.3125rem) {
+    section[id] {
+      scroll-margin-top: 82px;
+    }
   }
 }
 
-@layer utilities {
-  .container-app {
-    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+@utility container-app {
+  width: min(1160px, calc(100% - 40px));
+  margin-inline: auto;
+
+  @media (max-width: 51.25rem) {
+    width: min(100% - 28px, 680px);
+  }
+}
+
+@utility section-y {
+  padding-block: 84px;
+}
+
+@utility eyebrow {
+  font-size: 0.78rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 800;
+  color: var(--color-clay);
+}
+
+@utility section-title {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: clamp(2.25rem, 4vw, 4rem);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  margin: 10px 0 18px;
+}
+
+@utility section-lead {
+  color: var(--color-muted);
+  font-size: 1.05rem;
+}
+
+@utility card-ref {
+  background: var(--color-paper);
+  border: 1px solid var(--color-line);
+  border-radius: 26px;
+  padding: 28px;
+  box-shadow: var(--shadow-card);
+}
+
+@layer components {
+  .faq-item {
+    background: var(--color-paper);
+    border: 1px solid var(--color-line);
+    border-radius: 18px;
+    padding: 0 22px;
+    margin: 12px 0;
   }
 
-  .section-y {
-    @apply py-16 sm:py-20;
+  .faq-item summary {
+    cursor: pointer;
+    list-style: none;
+    font-weight: 750;
+    padding: 20px 32px 20px 0;
+    position: relative;
+  }
+
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-item summary::after {
+    content: '+';
+    position: absolute;
+    right: 0;
+    font-size: 1.4rem;
+    color: var(--color-clay);
+  }
+
+  .faq-item[open] summary::after {
+    content: '–';
   }
 }

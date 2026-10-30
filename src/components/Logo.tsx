@@ -2,31 +2,22 @@ import { cn } from '@/utils/cn';
 
 interface LogoProps {
   className?: string;
-  markClassName?: string;
-  showTagline?: boolean;
-  variant?: 'dark' | 'light';
 }
 
-export function Logo({ className, markClassName, showTagline = true, variant = 'dark' }: LogoProps) {
-  const textColor = variant === 'dark' ? 'text-brand-800' : 'text-white';
-  const taglineColor = variant === 'dark' ? 'text-brand-400' : 'text-white/70';
-
+// Reference "B" monogram tile with the Birth Nest wordmark.
+export function Logo({ className }: LogoProps) {
   return (
-    <div className={cn('flex items-center gap-2.5', className)}>
-      <img
-        src={variant === 'light' ? '/logo-mark-light.png' : '/logo-mark.png'}
-        alt=""
+    <span className={cn('flex items-center gap-3', className)}>
+      <span
         aria-hidden="true"
-        className={cn('h-9 w-auto', markClassName)}
-      />
-      <div className="leading-tight">
-        <p className={cn('font-serif text-lg font-bold tracking-wide', textColor)}>BIRTH NEST</p>
-        {showTagline && (
-          <p className={cn('text-[10px] font-medium uppercase tracking-[0.2em]', taglineColor)}>
-            Dr. Mythri Sharan
-          </p>
-        )}
-      </div>
-    </div>
+        className="grid h-11 w-11 place-items-center rounded-[14px] bg-ink font-serif text-[1.75rem] font-bold text-[#eadfce]"
+      >
+        B
+      </span>
+      <span>
+        <strong className="block font-serif text-base font-bold tracking-[0.08em] desk:text-[1.15rem]">BIRTH NEST</strong>
+        <small className="block text-[0.68rem] tracking-[0.19em] text-clay">WOMEN WELLNESS CENTRE</small>
+      </span>
+    </span>
   );
 }
