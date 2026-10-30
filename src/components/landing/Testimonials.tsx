@@ -1,4 +1,3 @@
-import { Star, Quote } from 'lucide-react';
 import { usePublicTestimonials } from '@/hooks/usePublicContent';
 import { Spinner } from '@/components/ui/Spinner';
 import { initials } from '@/utils/formatters';
@@ -7,37 +6,37 @@ export function Testimonials() {
   const { testimonials, loading } = usePublicTestimonials();
 
   return (
-    <section id="testimonials" className="section-y bg-white">
+    <section id="testimonials" className="section-y border-y border-line bg-paper">
       <div className="container-app">
-        <div className="mx-auto max-w-2xl text-center">
-          <p className="text-sm font-semibold uppercase tracking-wide text-brand-500">Patient Stories</p>
-          <h2 className="mt-2 font-serif text-3xl font-bold text-brand-900 sm:text-4xl">What Our Patients Say</h2>
+        <div className="mx-auto max-w-[850px] text-center">
+          <div className="eyebrow">Patient stories</div>
+          <h2 className="section-title">What our patients say</h2>
         </div>
 
-        <div className="mt-12">
+        <div className="mt-11">
           {loading ? (
             <Spinner label="Loading testimonials…" />
           ) : (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-[18px] xs:grid-cols-2 desk:grid-cols-3">
               {(testimonials.length ? testimonials : FALLBACK).map((t, i) => (
-                <div key={i} className="relative rounded-2xl border border-brand-100 bg-blush-50/60 p-6">
-                  <Quote className="h-6 w-6 text-brand-200" />
-                  <div className="mt-3 flex gap-0.5">
+                <figure key={i} className="card-ref m-0 flex flex-col !bg-cream">
+                  <div className="flex gap-0.5 text-peach" aria-label={`${t.rating} out of 5 stars`}>
                     {Array.from({ length: 5 }).map((_, idx) => (
-                      <Star
-                        key={idx}
-                        className={`h-4 w-4 ${idx < t.rating ? 'fill-brand-500 text-brand-500' : 'text-brand-200'}`}
-                      />
+                      <span key={idx} aria-hidden="true" className={idx < t.rating ? '' : 'text-line'}>
+                        ★
+                      </span>
                     ))}
                   </div>
-                  <p className="mt-3 text-sm text-brand-700">{t.message}</p>
-                  <div className="mt-5 flex items-center gap-3">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-200 text-xs font-semibold text-brand-800">
+                  <blockquote className="m-0 mt-3 flex-1 font-serif text-[1.08rem] leading-[1.45]">
+                    “{t.message}”
+                  </blockquote>
+                  <figcaption className="mt-5 flex items-center gap-3">
+                    <span className="grid h-9 w-9 place-items-center rounded-full bg-sand text-xs font-bold text-clay">
                       {initials(t.patient_name)}
-                    </div>
-                    <p className="text-sm font-medium text-brand-900">{t.patient_name}</p>
-                  </div>
-                </div>
+                    </span>
+                    <span className="text-sm font-[650]">{t.patient_name}</span>
+                  </figcaption>
+                </figure>
               ))}
             </div>
           )}
